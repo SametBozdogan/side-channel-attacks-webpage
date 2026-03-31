@@ -403,12 +403,38 @@
     <!-- Reveal.js Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+    <!-- Tam Ekran (Fullscreen) Butonu -->
+    <div id="fullscreen-btn" style="position: fixed; bottom: 25px; left: 25px; z-index: 9999; cursor: pointer; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 12px 16px; color: #fff; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.5);" title="Tam Ekran (F tuşu)" onmouseover="this.style.background='rgba(79, 172, 254, 0.8)';" onmouseout="this.style.background='rgba(0,0,0,0.6)';">
+        <i class="fas fa-expand" style="font-size: 1.2em;"></i>
+    </div>
+
     <script>
         Reveal.initialize({
             controls: true, progress: true, center: true, hash: true,
             transition: 'slide',
             plugins: [ RevealNotes ],
             showNotes: false 
+        });
+
+        // Fullscreen Toggle Logic
+        const fsBtn = document.getElementById('fullscreen-btn');
+        fsBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log("Tam ekran hatası: " + err.message);
+                });
+                fsBtn.innerHTML = '<i class="fas fa-compress" style="font-size: 1.2em;"></i>';
+            } else {
+                document.exitFullscreen();
+                fsBtn.innerHTML = '<i class="fas fa-expand" style="font-size: 1.2em;"></i>';
+            }
+        });
+        
+        // ESC tuşu çıkışını yakalamak için
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                fsBtn.innerHTML = '<i class="fas fa-expand" style="font-size: 1.2em;"></i>';
+            }
         });
     </script>
 </body>
